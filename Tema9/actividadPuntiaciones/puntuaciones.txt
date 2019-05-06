@@ -1,0 +1,2 @@
+hola, 50
+gustavo, 100
