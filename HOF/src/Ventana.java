@@ -1,21 +1,96 @@
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 /**
  *
  * @author Gustavo Pereira Kurpel
  */
 public class Ventana extends javax.swing.JFrame {
 
+    private static final String ARCHIVO_URL = "ficheros/jugadores.txt";
+    private DefaultListModel modelo;
+    private File archivo = new File(ARCHIVO_URL);
+
     /**
      * Creates new form Ventana
      */
     public Ventana() {
+        try {
+            comprobarArchivo();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error de E/S:", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         initComponents();
+        this.modelo = new DefaultListModel();
+        try {
+            leerJugadores();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error de E/S:", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void comprobarArchivo() throws IOException {
+
+        if (!archivo.exists()) {
+            JOptionPane.showMessageDialog(null, "No se han encontrado el archivo jugadores. Se creará un archivo nuevo.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            archivo.createNewFile();
+        }
+
+    }
+
+    private void borrarArchivo() {
+        archivo.delete();
+    }
+
+    private void leerJugadores() throws FileNotFoundException, IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(archivo));
+        String tmp;
+        boolean eof = false;
+
+        while (!eof) {
+            tmp = reader.readLine();
+
+            if (tmp != null) {
+                modelo.addElement(String.format("%s puntos.", tmp.replaceAll(",", "...")));
+            } else {
+                eof = true;
+            }
+
+        }
+
+        reader.close();
+        lista.setModel(modelo);
+    }
+
+    private void addJugador(String nombre, String puntos) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+        writer.append(nombre);
+        writer.append(",");
+        writer.append(puntos);
+        writer.newLine();
+
+        writer.close();
+
+        modelo.addElement(String.format("%s...%s puntos.", nombre, puntos));
+        lista.setModel(modelo);
     }
 
     /**
@@ -29,7 +104,7 @@ public class Ventana extends javax.swing.JFrame {
 
         txtTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList = new javax.swing.JList<>();
+        lista = new javax.swing.JList<>();
         btnNuevo = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
 
@@ -37,11 +112,21 @@ public class Ventana extends javax.swing.JFrame {
 
         txtTitulo.setText("***Hall Of Fame***");
 
-        jScrollPane1.setViewportView(jList);
+        jScrollPane1.setViewportView(lista);
 
         btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,6 +165,37 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+
+        String nombre, puntos;
+
+        nombre = JOptionPane.showInputDialog(null, "¿Nombre del jugador?", "Nuevo", JOptionPane.QUESTION_MESSAGE);
+
+        puntos = JOptionPane.showInputDialog(null, "¿Puntuación del jugador?", "Nuevo", JOptionPane.QUESTION_MESSAGE);
+
+        try {
+            addJugador(nombre, puntos);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error de E/S:", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ;
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres borrar todos los datos de jugadores?", "Advertencia", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.CANCEL_OPTION) {
+            JOptionPane.showMessageDialog(null, "Operación cancelada. no se ha borrado ningún dato.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        modelo.removeAllElements();
+        lista.setModel(modelo);
+        
+        borrarArchivo();
+    }//GEN-LAST:event_btnBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,8 +236,8 @@ public class Ventana extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JList<String> jList;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> lista;
     private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
