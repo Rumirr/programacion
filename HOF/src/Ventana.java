@@ -78,13 +78,13 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private void addJugador(String nombre, String puntos) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
 
         writer.append(nombre);
         writer.append(",");
         writer.append(puntos);
         writer.newLine();
-
+        
         writer.close();
 
         modelo.addElement(String.format("%s...%s puntos.", nombre, puntos));
@@ -173,13 +173,13 @@ public class Ventana extends javax.swing.JFrame {
         if (nombre == null) {
             return;
         }
-        
+
         puntos = JOptionPane.showInputDialog(null, "¿Puntuación del jugador?", "Nuevo", JOptionPane.QUESTION_MESSAGE);
 
         if (puntos == null) {
             return;
-        }        
-        
+        }
+
         try {
             addJugador(nombre, puntos);
         } catch (IOException ex) {
@@ -192,14 +192,14 @@ public class Ventana extends javax.swing.JFrame {
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que quieres borrar todos los datos de jugadores?", "Advertencia", JOptionPane.YES_NO_OPTION);
 
-        if (respuesta == JOptionPane.CANCEL_OPTION) {
+        if (respuesta == JOptionPane.NO_OPTION) {
             JOptionPane.showMessageDialog(null, "Operación cancelada. no se ha borrado ningún dato.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         modelo.removeAllElements();
         lista.setModel(modelo);
-        
+
         borrarArchivo();
     }//GEN-LAST:event_btnBorrarActionPerformed
 
