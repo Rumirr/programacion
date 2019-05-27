@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -172,8 +170,16 @@ public class Ventana extends javax.swing.JFrame {
 
         nombre = JOptionPane.showInputDialog(null, "¿Nombre del jugador?", "Nuevo", JOptionPane.QUESTION_MESSAGE);
 
+        if (nombre == null) {
+            return;
+        }
+        
         puntos = JOptionPane.showInputDialog(null, "¿Puntuación del jugador?", "Nuevo", JOptionPane.QUESTION_MESSAGE);
 
+        if (puntos == null) {
+            return;
+        }        
+        
         try {
             addJugador(nombre, puntos);
         } catch (IOException ex) {
