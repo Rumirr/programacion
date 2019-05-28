@@ -107,6 +107,7 @@ public class Ventana extends javax.swing.JFrame {
         btnBorrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hall Of Fame");
 
         txtTitulo.setText("***Hall Of Fame***");
 
