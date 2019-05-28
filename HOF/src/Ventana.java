@@ -20,9 +20,11 @@ import javax.swing.JOptionPane;
  */
 public class Ventana extends javax.swing.JFrame {
 
-    private static final String ARCHIVO_URL = "ficheros/jugadores.txt";
+    private static final String HOME = System.getProperty("user.home");
+    private static final String CARPETA = "/HallOfFame";
+    private static final String ARCHIVO_NOMBRE = "/jugadores.txt";
     private DefaultListModel modelo;
-    private File archivo = new File(ARCHIVO_URL);
+    private File archivo = new File(HOME + CARPETA + ARCHIVO_NOMBRE);
 
     /**
      * Creates new form Ventana
@@ -45,6 +47,13 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private void comprobarArchivo() throws IOException {
+
+        File carpeta = new File(HOME+CARPETA);
+        
+        if (!carpeta.exists()) {
+            carpeta.mkdir();
+        }
+        
 
         if (!archivo.exists()) {
             JOptionPane.showMessageDialog(null, "No se han encontrado el archivo jugadores. Se creará un archivo nuevo.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -84,7 +93,7 @@ public class Ventana extends javax.swing.JFrame {
         writer.append(",");
         writer.append(puntos);
         writer.newLine();
-        
+
         writer.close();
 
         modelo.addElement(String.format("%s...%s puntos.", nombre, puntos));
