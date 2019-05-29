@@ -34,14 +34,11 @@ public class Ejercicio04 extends javax.swing.JFrame {
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(temporal));
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        
+
         bufferedReader.transferTo(bufferedWriter);
         bufferedWriter.write("\n" + pieDePagina);
 
-        String path = file.toString();
-
-        file.delete();
-        temporal.renameTo(new File(path));
+        temporal.renameTo(file);
 
         bufferedReader.close();
         bufferedWriter.close();

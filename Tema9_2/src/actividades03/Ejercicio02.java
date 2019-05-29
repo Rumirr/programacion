@@ -30,19 +30,17 @@ public class Ejercicio02 extends javax.swing.JFrame {
         initComponents();
     }
 
-    private void escribirEncabezado(File file) throws IOException {
+    private void escribirEncabezado(File archivoOriginal) throws IOException {
 
-        File temporal = new File(file.toString().replace(file.getName(), "temporal"));
+        File temporal = new File(archivoOriginal.toString().replace(archivoOriginal.getName(), "temporal"));
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(temporal));
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(archivoOriginal));
         bufferedWriter.write(ENCABEZADO + "\n");
         bufferedReader.transferTo(bufferedWriter);
 
-        String path = file.toString();
 
-        file.delete();
-        temporal.renameTo(new File(path));
+        temporal.renameTo(archivoOriginal);
 
         bufferedReader.close();
         bufferedWriter.close();

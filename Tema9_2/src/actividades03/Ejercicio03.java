@@ -37,10 +37,8 @@ public class Ejercicio03 extends javax.swing.JFrame {
         bufferedWriter.write(encabezado + "\n");
         bufferedReader.transferTo(bufferedWriter);
 
-        String path = file.toString();
 
-        file.delete();
-        temporal.renameTo(new File(path));
+        temporal.renameTo(file);
 
         bufferedReader.close();
         bufferedWriter.close();
