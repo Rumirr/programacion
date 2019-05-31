@@ -8,6 +8,7 @@ package tresenraya;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -22,7 +23,7 @@ public class Ventana extends javax.swing.JFrame {
         x, c
     }
     private static xOc turno = xOc.x;
-    private static int movimientos = 0;
+    private static int casillasMarcadas = 0;
     private static ArrayList<JLabel> casillas = new ArrayList<JLabel>();
 
     private static ImageIcon x_icon = new ImageIcon("img/x.png");
@@ -64,6 +65,13 @@ public class Ventana extends javax.swing.JFrame {
 
         }
         return null;
+    }
+    
+    private void resetea(){
+        casillasMarcadas = 0;
+        for (JLabel casilla : casillas) {
+            casilla.setIcon(null);
+        }
     }
 
     /**
@@ -139,7 +147,7 @@ public class Ventana extends javax.swing.JFrame {
         JLabel lbltmp = getClickedJLabel(evt.getPoint());
 
         if (lbltmp != null && lbltmp.getIcon() == null) {
-            if (movimientos <= 9) {
+            if (casillasMarcadas <= 9) {
 
                 if (turno == xOc.x) {
                     lbltmp.setIcon(x_icon);
@@ -148,9 +156,12 @@ public class Ventana extends javax.swing.JFrame {
                     lbltmp.setIcon(c_icon);
                     turno = xOc.x;
                 }
-                movimientos++;
+                casillasMarcadas++;
             }
-
+        }
+        
+        if (casillasMarcadas == 9) {
+            resetea();
         }
 
     }//GEN-LAST:event_formMouseClicked
