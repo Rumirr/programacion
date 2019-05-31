@@ -5,7 +5,12 @@
  */
 package tresenraya;
 
-import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -13,12 +18,48 @@ import java.awt.GridLayout;
  */
 public class Ventana extends javax.swing.JFrame {
 
+    private enum xOc {
+        x, c
+    }
+    private static xOc turno = xOc.x;
+    private static ArrayList<JLabel> casillas = new ArrayList<JLabel>();
+
+    private static ImageIcon x_icon = new ImageIcon("img/x.svg");
+    private static ImageIcon c_icon = new ImageIcon("img/circulo.png");
+
     /**
      * Creates new form Ventana
      */
     public Ventana() {
         initComponents();
-    
+
+        casillas.add(lblCasilla1);
+        casillas.add(lblCasilla2);
+        casillas.add(lblCasilla3);
+        casillas.add(lblCasilla4);
+        casillas.add(lblCasilla5);
+        casillas.add(lblCasilla6);
+        casillas.add(lblCasilla7);
+        casillas.add(lblCasilla8);
+        casillas.add(lblCasilla9);
+
+        c_icon = new ImageIcon(c_icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+    }
+
+    private JLabel getClickedJLabel(Point mousePosition) {
+
+        for (JLabel casilla : casillas) {
+
+            if (casilla.getX() < mousePosition.getX()
+                    && (casilla.getWidth() + casilla.getX()) > mousePosition.getX()
+                    && casilla.getY() < mousePosition.getY()
+                    && (casilla.getHeight() + casilla.getY()) > mousePosition.getY()) {
+
+                return casilla;
+            }
+
+        }
+        return null;
     }
 
     /**
@@ -41,7 +82,13 @@ public class Ventana extends javax.swing.JFrame {
         lblCasilla9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tres en raya");
         setMinimumSize(new java.awt.Dimension(403, 452));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridLayout(3, 3));
 
         lblCasilla1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -91,6 +138,24 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+
+        JLabel lbltmp = getClickedJLabel(evt.getPoint());
+
+        if (lbltmp != null) {
+            lbltmp.setText("");
+            if (turno == xOc.x) {
+                lbltmp.setIcon(x_icon);
+                turno = xOc.c;
+            } else {
+                lbltmp.setIcon(c_icon);
+                turno = xOc.x;
+            }
+
+        }
+
+    }//GEN-LAST:event_formMouseClicked
 
     /**
      * @param args the command line arguments
