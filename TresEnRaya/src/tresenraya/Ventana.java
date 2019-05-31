@@ -25,7 +25,7 @@ public class Ventana extends javax.swing.JFrame {
     private static int movimientos = 0;
     private static ArrayList<JLabel> casillas = new ArrayList<JLabel>();
 
-    private static ImageIcon x_icon = new ImageIcon("img/x.svg");
+    private static ImageIcon x_icon = new ImageIcon("img/x.png");
     private static ImageIcon c_icon = new ImageIcon("img/circulo.png");
 
     /**
@@ -34,6 +34,8 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
 
+        setLocationRelativeTo(null);
+        
         casillas.add(lblCasilla1);
         casillas.add(lblCasilla2);
         casillas.add(lblCasilla3);
@@ -44,8 +46,8 @@ public class Ventana extends javax.swing.JFrame {
         casillas.add(lblCasilla8);
         casillas.add(lblCasilla9);
 
-        x_icon = new ImageIcon(x_icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH));
-        c_icon = new ImageIcon(c_icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+        x_icon = new ImageIcon(x_icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH));
+        c_icon = new ImageIcon(c_icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH));
     }
 
     private JLabel getClickedJLabel(Point mousePosition) {
@@ -136,11 +138,11 @@ public class Ventana extends javax.swing.JFrame {
 
         JLabel lbltmp = getClickedJLabel(evt.getPoint());
 
-        if (lbltmp != null) {
+        if (lbltmp != null && lbltmp.getIcon() == null) {
             if (movimientos <= 9) {
 
                 if (turno == xOc.x) {
-                    lbltmp.setText("X");
+                    lbltmp.setIcon(x_icon);
                     turno = xOc.c;
                 } else {
                     lbltmp.setIcon(c_icon);
