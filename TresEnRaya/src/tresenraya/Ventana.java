@@ -22,6 +22,7 @@ public class Ventana extends javax.swing.JFrame {
         x, c
     }
     private static xOc turno = xOc.x;
+    private static int movimientos = 0;
     private static ArrayList<JLabel> casillas = new ArrayList<JLabel>();
 
     private static ImageIcon x_icon = new ImageIcon("img/x.svg");
@@ -43,6 +44,7 @@ public class Ventana extends javax.swing.JFrame {
         casillas.add(lblCasilla8);
         casillas.add(lblCasilla9);
 
+        x_icon = new ImageIcon(x_icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH));
         c_icon = new ImageIcon(c_icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH));
     }
 
@@ -92,47 +94,38 @@ public class Ventana extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.GridLayout(3, 3));
 
         lblCasilla1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla1.setText("jLabel1");
         lblCasilla1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla1);
 
         lblCasilla2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla2.setText("jLabel4");
         lblCasilla2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla2);
 
         lblCasilla3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla3.setText("jLabel2");
         lblCasilla3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla3);
 
         lblCasilla4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla4.setText("jLabel3");
         lblCasilla4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla4);
 
         lblCasilla5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla5.setText("jLabel7");
         lblCasilla5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla5);
 
         lblCasilla6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla6.setText("jLabel5");
         lblCasilla6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla6);
 
         lblCasilla7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla7.setText("jLabel6");
         lblCasilla7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla7);
 
         lblCasilla8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla8.setText("jLabel8");
         lblCasilla8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla8);
 
         lblCasilla9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCasilla9.setText("jLabel9");
         lblCasilla9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         getContentPane().add(lblCasilla9);
 
@@ -144,13 +137,16 @@ public class Ventana extends javax.swing.JFrame {
         JLabel lbltmp = getClickedJLabel(evt.getPoint());
 
         if (lbltmp != null) {
-            lbltmp.setText("");
-            if (turno == xOc.x) {
-                lbltmp.setIcon(x_icon);
-                turno = xOc.c;
-            } else {
-                lbltmp.setIcon(c_icon);
-                turno = xOc.x;
+            if (movimientos <= 9) {
+
+                if (turno == xOc.x) {
+                    lbltmp.setText("X");
+                    turno = xOc.c;
+                } else {
+                    lbltmp.setIcon(c_icon);
+                    turno = xOc.x;
+                }
+                movimientos++;
             }
 
         }
