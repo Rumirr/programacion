@@ -24,6 +24,7 @@ public class Ventana extends javax.swing.JFrame {
     }
     private static xOc turno = xOc.x;
     private static int casillasMarcadas = 0;
+
     private static ArrayList<JLabel> casillas = new ArrayList<JLabel>();
 
     private static ImageIcon x_icon = new ImageIcon("img/x.png");
@@ -36,7 +37,7 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
 
         setLocationRelativeTo(null);
-        
+
         casillas.add(lblCasilla1);
         casillas.add(lblCasilla2);
         casillas.add(lblCasilla3);
@@ -46,6 +47,11 @@ public class Ventana extends javax.swing.JFrame {
         casillas.add(lblCasilla7);
         casillas.add(lblCasilla8);
         casillas.add(lblCasilla9);
+        casillas.forEach((casilla) -> {
+            Double d = Math.random();
+
+            casilla.setName(d.toString());
+        });
 
         x_icon = new ImageIcon(x_icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH));
         c_icon = new ImageIcon(c_icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH));
@@ -66,12 +72,60 @@ public class Ventana extends javax.swing.JFrame {
         }
         return null;
     }
-    
-    private void resetea(){
+
+    private void resetea() {
         casillasMarcadas = 0;
-        for (JLabel casilla : casillas) {
+        casillas.forEach((casilla) -> {
+            Double d = Math.random();
+
+            casilla.setName(d.toString());
             casilla.setIcon(null);
+        });
+    }
+
+    private JLabel compruebaGanador(ArrayList<JLabel> lista) {
+
+        // lineas horizontales
+        //arriba
+        if ((lista.get(0).getName().equalsIgnoreCase(lista.get(1).getName()) && lista.get(0).getName().equalsIgnoreCase(lista.get(2).getName()))) {
+//            System.out.println("lineas horizontales: arriba");
+
+            return lista.get(0);
+        } else //medio
+        if (lista.get(3).getName().equalsIgnoreCase(lista.get(4).getName()) && lista.get(3).getName().equalsIgnoreCase(lista.get(5).getName())) {
+//            System.out.println("lineas horizontales medio");
+            return lista.get(3);
+        } else //abajo
+        if (lista.get(6).getName().equalsIgnoreCase(lista.get(7).getName()) && lista.get(6).getName().equalsIgnoreCase(lista.get(8).getName())) {
+//            System.out.println("lineas horizontales: abajo");
+            return lista.get(6);
+        } else // lineas verticales
+        //
+        if (lista.get(0).getName().equalsIgnoreCase(lista.get(3).getName()) && lista.get(0).getName().equalsIgnoreCase(lista.get(6).getName())) {
+//            System.out.println("lineas verticales izquierda");
+            return lista.get(0);
+        } else //medio
+        if (lista.get(1).getName().equalsIgnoreCase(lista.get(4).getName()) && lista.get(1).getName().equalsIgnoreCase(lista.get(7).getName())) {
+//            System.out.println("lineas verticales medio");
+            return lista.get(1);
+        } else //derecha
+        if (lista.get(2).getName().equalsIgnoreCase(lista.get(5).getName()) && lista.get(2).getName().equalsIgnoreCase(lista.get(8).getName())) {
+//            System.out.println("lineas verticales derecha");
+            return lista.get(2);
+        } else // linesa diagonales
+        //arriba izquierda
+        if (lista.get(0).getName().equalsIgnoreCase(lista.get(4).getName()) && lista.get(0).getName().equalsIgnoreCase(lista.get(8).getName())) {
+//            System.out.println("linesa diagonales arriba izquierda");
+            return lista.get(0);
+        } else //arriba derecha
+        if (lista.get(2).getName().equalsIgnoreCase(lista.get(4).getName()) && lista.get(2).getName().equalsIgnoreCase(lista.get(6).getName())) {
+//            System.out.println("linesa diagonales arriba derecha");
+            return lista.get(2);
+        } else {
+//            System.out.println("nada");
+            return null;
         }
+
     }
 
     /**
@@ -150,16 +204,25 @@ public class Ventana extends javax.swing.JFrame {
             if (casillasMarcadas <= 9) {
 
                 if (turno == xOc.x) {
+                    // añadiendo la imagen a label
                     lbltmp.setIcon(x_icon);
+                    lbltmp.setName("x");
+
+                    // cambiado en turno
                     turno = xOc.c;
+
+                    compruebaGanador(casillas);
                 } else {
                     lbltmp.setIcon(c_icon);
+                    lbltmp.setName("c");
                     turno = xOc.x;
+
+                    compruebaGanador(casillas);
                 }
                 casillasMarcadas++;
             }
         }
-        
+
         if (casillasMarcadas == 9) {
             resetea();
         }
